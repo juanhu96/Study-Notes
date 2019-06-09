@@ -1,0 +1,1464 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{mathtools}
+\usepackage{color}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\renewcommand{\baselinestretch}{1.1}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+% Colors
+\definecolor{blu}{rgb}{0,0,1}
+\def\blu#1{{\color{blu}#1}}
+\definecolor{gre}{rgb}{0,.5,0}
+\def\gre#1{{\color{gre}#1}}
+\definecolor{red}{rgb}{1,0,0}
+\def\red#1{{\color{red}#1}}
+
+% Math
+\def\C{\mathbb{C}}
+\def\E{\mathbb{E}}
+\def\R{\mathbb{R}}
+\def\N{\mathbb{N}}
+\def\Z{\mathbb{Z}}
+
+\def\A{\mathcal{A}}
+\def\B{\mathcal{B}}
+\def\D{\mathcal{D}}
+\def\F{\mathcal{F}}
+\def\G{\mathcal{G}}
+\def\H{\mathcal{H}}
+\def\L{\mathcal{L}}
+\def\P{\mathcal{P}}
+\def\S{\mathcal{S}}
+\def\T{\mathcal{T}}
+\def\a{\alpha}
+\def\b{\beta}
+\def\t{\tau}
+\def\epsi{\epsilon}
+\def\em{\emptyset}
+\def\imp{\Rightarrow}
+\def\limp{\Leftarrow}
+\def\goes{\rightarrow}
+
+\def\argmax{\mathop{\rm arg\,max}}
+\def\argmin{\mathop{\rm arg\,min}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\alignStar}[1]{\begin{align*}#1\end{align*}}
+
+%%
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[thm]
+\newtheorem{lemma}[thm]{Lemma}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{pty}{Property}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{notation}{Notation}[section]
+\newtheorem{obs}{Observation}[section]
+\newcommand{\The}[2]{\begin{#1}#2\end{#1}}
+\newcommand{\ord}[0]{\text{ord}}
+
+%%
+% notes
+\iftrue 
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\re}[1]{\frac{1}{#1}}
+\newcommand{\half}[0]{\frac{1}{2}}
+\newcommand{\ift}[0]{It follows that}
+\newcommand{\cp}[1]{\overline{#1}}
+\newcommand{\Note}[0]{\noindent\textbf{Note: }} 
+\newcommand{\Claim}[0]{\noindent\textbf{Claim: }} 
+\newcommand{\Lemma}[1]{\noindent\textbf{Lemma #1}: } %
+\newcommand{\Ex}[0]{\noindent\textbf{Example: }} %
+\newcommand{\Special}[0]{\noindent\textbf{Special case: }} %
+\newcommand{\solution}[2]{\item[]\proof[Solution to #1] #2 \qedhere}
+\newcommand{\legendre}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\dent}[0]{\hspace{0.5in}}
+\fi
+
+\newcommand{\sm}[0]{\setminus}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\expect}[1]{\operatorname{E}\left[\,#1\,\right]}
+\newcommand{\nl}[0]{\vspace{12pt}}
+\newcommand{\rng}[2]{#1,\dots,#2}
+\newcommand{\srng}[3]{#1_#2,\dots,#1_#3}
+\newcommand{\st}[0]{\text{ such that }}
+\newcommand{\et}[0]{\text{ and }}
+\newcommand{\then}[0]{\text{ then }}
+\newcommand{\forsome}[0]{\text{ for some }}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+
+% misc
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert} %
+% lcm ???
+\DeclareMathOperator{\lcm}{lcm} 
+% blackboard bold
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\FF}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\CC}{\mathbb{C}}
+% mathcal
+\newcommand{\m}[1]{\mathcal{#1}}
+% vectors
+\newcommand{\vvec}[1]{\textbf{#1}} %
+\newcommand{\ii}[0]{\vvec{i}} %
+\newcommand{\jj}[0]{\vvec{j}} %
+\newcommand{\kk}[0]{\vvec{k}} %
+\newcommand{\hvec}[1]{\hat{\textbf{#1}}} %
+\newcommand{\cvec}[3]{ %column vector
+    \ensuremath{\left(\begin{array}{c}#1\\#2\\#3\end{array}\right)}}
+\newcommand{\pfrac}[2]{\frac{\partial#1}{\partial#2}} %
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} %
+% dotp roduct
+\makeatletter
+\newcommand*\dotp{\mathpalette\dotp@{.5}}
+\newcommand*\dotp@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\makeatother
+% divrg and curl
+\newcommand{\divrg}[0]{\nabla\dotp} %
+\newcommand{\curl}[0]{\nabla\times} %
+
+\begin{document}
+
+\title{\vspace{-1.6cm} \huge\textbf{{Linear Programming Notes}}}
+\author{\large\textit{{Jingyuan Hu}}}
+\date{}
+\maketitle
+
+\text{}\\
+\textbf{Disclaimer}: This note is entirely for personal purpose.
+Please feel free to email me at \textit{juanhu96@gmail.com} if you find any mistakes or you have any suggestions.
+The majority of the contents/materials are based on Lecture Notes from UCLA EE$236A$ (Linear Programming), 
+UBC CPSC$542F$ (Convex Analysis and Optimization), Cornell ORIE$6300$ (Mathematical Programming), 
+along with my own understanding and comments. This note will be continuously updated.\\
+\\
+\textbf{Reference textbooks}:\\
+\textit{Convex Optimization} (Stephen Boyd and L. Vandenberghe)\\
+\textit{Introduction to Linear Optimization} (Dimitris Bertsimas and John N. Tsitsiklis)\\
+
+\tableofcontents
+
+\section{Introduction}
+A brief review on some basic concepts in optimization and linear algebra.
+
+\subsection{Linear Algebra Review}
+
+\begin{defn} \textbf{Subspace}:
+	A nonempty subset $S$ of $\R^n$ is a subspace if $x, y \in S$, $\a, \b \in \R \imp \a x + \b y \in S$
+\end{defn}
+
+\begin{remark}
+	This extends recursively to linear combinations of more than two vectors:
+	\begin{equation*}
+		x_1, ..., x_k \in S, \a_1, ..., \a_k \in \R \imp \a_1 x_1 + ... + \a_k x_k \in S
+	\end{equation*}
+	Moreover, all subspaces contain the origin.
+\end{remark}
+
+\begin{defn} \textbf{Range and null space}:
+	$range(A) := \mathcal{R}(A) = \{x\in \R^m | x = Ay \text{ for some y} \}$ is a subspace of $\R^m$, and
+	$null(A) = \{x\in \R^n | Ax = 0\}$ is a subspace of $\R^n$
+\end{defn}
+
+\begin{defn} \textbf{Linear independence}:
+	A nonempty set of vectors $\{v_1, v_2, ..., v_k\}$ is linearly independent if
+	$\a_{1}v_{1} + \a_{2}v_{2} + \dots + \a_{k}v_{k} = 0$ holds only for
+	$\a_{1} = \a_{2} = \dots = \a_{k} = 0$
+\end{defn}
+
+\begin{defn} \textbf{Basis}:
+	$\{v_1, v_2, ..., v_k\} \subseteq S$ is a basis of a subspace $S$ if
+	(1) every $x \in S$ can be expressed as a linear combination of $v_1, v_2, ..., v_k$;
+	(2) $\{v_1, v_2, ..., v_k\}$ is a linearly independent set
+\end{defn}
+\Note: This is equivalent to say $x \in S$ is uniquely expressed by
+$x = \a_{1}v_{1} + \a_{2}v_{2} + \dots + \a_{k}v_{k}$
+
+\begin{defn} \textbf{Dimension}:
+	$dim(S)$: the number of vectors in a basis of $S$
+\end{defn}
+
+\begin{remark}
+	All bases of a subspace have the same size
+\end{remark}
+
+\begin{example}
+	$Ax = b$ with $A \in \R^{m\times n}$, then $range(A)$ determines existence of solutions
+	(if $range(A) = \R^m$, there is at least one soln for every $b \in \R^m$)
+	and $null(A)$ determines uniqueness of solutions
+	(if $\hat{x}$ is a solution, then the complete soln set: $\{\hat{x} + v | Av = 0\}$)
+\end{example}
+
+\begin{remark}
+	If $null(A) = \{0\}$, there's at most one soln for every $b$, which can be shown be contradtion
+	($Ax_1 = b, Ax_2 = b \imp A(x_{1}-x_{2}) = 0$)
+\end{remark}
+
+\begin{defn} \textbf{Rank}:
+	The (column) rank of a matrix $A$ is defined as $rank(A) := \dim \mathcal{R}(A)$.
+	The row rank of $A$ is $\dim \mathcal{R}(A^T)$.
+\end{defn}
+
+\begin{thm}
+	Let $A: \R^n \goes \R^m$, then $\mathcal{N}(A)^{\perp} = \mathcal{R}(A^T)$ only in finite-dimensional vector spaces;
+	$\mathcal{R}(A)^{\perp} = \mathcal{N}(A^T)$ holds for all (including infinite-dimensional) vector spaces.
+\end{thm}
+\proof
+Take an arbitrary $x \in \mathcal{N}(A)$, then $Ax = 0$, and this is equivalent to $y^TAx=0$ for all $y$.
+Notice that $y^TAx = (A^Ty)^Tx$, then $Ax = 0$ iff $x \perp A^Ty$, i.e. $x \in \mathcal{R}(A^T)$.
+This implies $\mathcal{N}(A)^{\perp} = \mathcal{R}(A^T)$ and the rest are similiar.
+\qedhere
+
+\begin{thm}
+	Let $A: \R^n \goes \R^m$, then $\dim \mathcal{R}(A) = \dim \mathcal{N}(A)^{\perp} = \dim \mathcal{R}(A^T)$,
+	i.e. row rank of $A$ = column rank of $A$.
+\end{thm}
+
+\begin{pty}
+	$rank(A) = rank(A^T)$
+\end{pty}
+
+\begin{pty}
+	$rank(A) \le \min\{m,n\}$ ($A$ is said to be full rank if equal)
+\end{pty}
+
+\begin{pty}
+	$\dim null(A) = n - rank(A)$
+\end{pty}
+
+
+\begin{defn} \textbf{Left-invertible matrix}:
+	An $m\times n$ matrix $A$ is left-invertible if: (TFAE)\\
+	There exists an $X$ with $XA = I$ ($X$ is called a left inverse of $A$)\\
+	$\iff$ the \underline{columns} of $A$ form a linearly independent set\\
+	$\iff Ax = b$ has \underline{at most} one solution for every r.h.s. $b$\\
+	$\iff rank(A) = n \iff null(A) = \{0\}$
+\end{defn}
+
+\begin{remark}
+	$A \in \R^{m\times n}$ left-invertible $\imp m \ge n$.
+\end{remark}
+
+\begin{defn} \textbf{Right-invertible matrix}:
+	An $m\times n$ matrix $A$ is right-invertible if: (TFAE)\\
+	There exists an $Y$ with $AY = I$ ($Y$ is called a right inverse of $A$)\\
+	$\iff$ the \underline{rows} of $A$ form a linearly independent set\\
+	$\iff Ax = b$ has \underline{at least} one solution for every r.h.s. $b$\\
+	$\iff rank(A) = m \iff range(A) = \R^m$
+\end{defn}
+
+\begin{remark}
+	$A \in \R^{m\times n}$ right-invertible $\imp m \le n$.
+\end{remark}
+
+\begin{defn} \textbf{Invertible matrix}:
+	$A$ is invertible (nonsingular) if it is left- and right-invertible
+\end{defn}
+
+\begin{remark}
+	From the definition of left- and right-invertible,
+	we can easily conclude that $A$ is necessarily square,
+	and $Ax = b$ has \underline{exactly} one solution for every r.h.s. $b$
+\end{remark}
+
+\begin{remark}
+	If left inverse ($X$) and right inverses ($Y$) exist, they must be equal and unique.
+	We use the notation $A^{-1}$ for the left/right inverse of an invertible matrix.
+	(i.e. $XA = I, AY = I \imp X = X(AY) = (XA)Y = Y$)
+\end{remark}
+
+\subsection{Optimization Review}
+
+\begin{pty}
+	\textbf{Cauchy-Schwarz inequality}:
+	$$x^Ty = \norm{x}\norm{y}cos\theta \imp -\norm{x}\norm{y} \le x^Ty \le \norm{x}\norm{y}$$
+\end{pty}
+
+\begin{pty}
+	\textbf{Projection} (x on the line defined by nonzero $y$): the \textbf{vector} $\hat{t}y$ with
+	$$\hat{t} = \argmin\limits_{t}{\norm{x-ty}} \imp \hat{t} = \frac{x^Ty}{\norm{y}^2} = \frac{\norm{x}\norm{y}cos\theta}{\norm{y}^2} = \frac{\norm{x}cos\theta}{\norm{y}}$$
+\end{pty}
+
+\begin{defn}
+	\textbf{Hyperplane}: Solution set of one linear equation with nonzero coefficient vector $a$: $a^Tx = b$
+\end{defn}
+
+\begin{defn}
+	\textbf{Halfspace}: Solution set of one linear inequality with nonzero coefficient vector $a$:
+	$a^Tx \le b$
+\end{defn}
+
+\Note $a$ is the \textit{normal vector} of hyperplane $G = \{x | a^Tx = b\}$ and halfspace $H = \{x | a^Tx \le b\}$\\
+
+\Note Vector \(u = \frac{b}{\norm{a}^2}a \imp a^Tu = b\) ($u$ is in the direction of $a$, which is the normal vector.)
+
+\begin{remark}
+	$x$ in hyperplane $G$ if $a^T(x-u) = 0$, $x$ in halfspace $H$ if $a^T(x-u) \le 0$
+\end{remark}
+
+\begin{defn}
+	\textbf{Polyhedron}: Solution set of a \textit{finite} number of linear inequalities
+	$$a^{T}_1x \le b_1, a^{T}_2x\le b_2, . . . , a^{T}_mx\le b_m$$
+	(Matrix notation: $Ax\le b$ if $A$ is a matrix with rows $a^{T}_i$)\\
+	A polyhedron is an intersection of a \textit{finite} number of halfspaces
+\end{defn}
+\Note Some linear inequalities in polyhedron can be equalities $Fx = g \iff Fx \le g, -Fx \le -g$.
+
+\begin{defn}
+	\textbf{Linear Function}: $f: \R^n \goes \R$, $f(\a x + \b y) = \a f(x) + \b f(y), \forall x, y \in \R^n, \a, \b \in \R$
+\end{defn}
+
+\begin{pty}
+	$f$ is linear $\iff f(x) = a^Tx$ for some $a$
+\end{pty}
+\proof
+($\limp$): $f(\a x + \b y) = a^T(\a x) + a^T(\b y) = \a(a^Tx) + \b(a^Ty) = \a f(x) + \b f(y)$\\
+($\imp$): $f(x) = f(x_{1}e_{1}+ \dots + x_{n}e_{n}) = x_{1}f(e_{1}) + \dots + x_{n}f(e_{n}) = x_{1}a_{1} + \dots + x_{n}a_{n} = a^Tx$
+\qedhere
+
+\begin{defn}
+	\textbf{Affine Function}: $f: \R^n \goes \R$, $f(\a x + (1-\a) y) = \a f(x) + (1-\a) f(y), \forall x, y \in \R^n, \a \in \R$
+\end{defn}
+
+\begin{pty}
+	$f$ is affine $\iff f(x) = a^Tx + b$ for some $a, b$
+\end{pty}
+\proof
+\qedhere
+
+\Note\\
+(1) A linear function is affine\\
+(2) A function is linear if and only if it preserves the linear (aka vector space) structure (i.e. operations of vector addition and multiplication by scalar)\\
+(3) An affine function is a function composed of a linear function + a constant; It is linear if and only if it fixes the origin\\
+(4) A function is affine if and only if it preserves the affine structure (i.e. transitive free action $(\nu,s) \goes \nu + s$ by a vector space $V$)
+
+\begin{defn}
+	\textbf{Affine Set}: A subset $S$ of $\R^n$ is affine if $x, y \in S$, $\a + \b = 1 \imp \a x+ \b y \in S$
+\end{defn}
+
+\begin{defn}
+	The line through any two distinct points $x, y$ in $S$ is in $S$.
+	The definition can be extend recursively to affine combinations of more than two vectors:
+	\begin{equation*}
+		x_1, ..., x_k \in S, \a_1 + \dots + \a_k = 1 \imp \a_1 x_1 + \dots + \a_k x_k \in S
+	\end{equation*}
+\end{defn}
+
+\begin{pty}
+	\textbf{Parallel Subspace}:
+	A nonempty set $S$ is affine if and only if the set $L = S - \hat{x}$ with $\hat{x} \in S$ is a subspace.
+\end{pty}
+
+\begin{remark}
+	The parallel subspace $L$ is independent of the choice of $\hat{x} \in S$.
+\end{remark}
+
+\begin{remark}
+	$\dim(S) = \dim(L)$
+\end{remark}
+
+\begin{remark}
+	$S = \{x | Ax = b\}$ is an affine set. Moreover, all affine sets can be represented this way.
+\end{remark}
+
+\begin{remark}
+	$S = \{x | x = Ay + c \text{ for some } y\}$ is an affine set.
+	Moreover, all \textit{nonempty} affine sets can be represented this way.
+\end{remark}
+
+\begin{defn}
+	\textbf{Affine hull}: Affine hull of a set $C$ is the smallest affine set that contains $C$,
+	i.e. set of all affine combinations of points in $C$ :
+	\begin{equation*}
+		\text{aff} C = \{\a_1 v_1 + \dots + \a_k v_k| k \ge 1, v_1, ..., v_k \in C, \a_1 + \dots + \a_k = 1\}
+	\end{equation*}
+\end{defn}
+
+\begin{example}
+	$C = \{(x, y, z) \in \R^3 | x^2 + y^2 =1, z= 1\} \imp \text{aff} C = \{(x, y, z) \in \R^3 | z= 1\}$
+\end{example}
+
+\begin{defn}
+	\textbf{Affine independence}: a set of vectors $\{v_1, v_2, ..., v_k\}$ in $\R^n$ is affinely independent if
+	\begin{equation*}
+		rank(
+		\begin{bmatrix}
+			v_1 & v_2 & ... & v_k \\
+			1   & 1   & ... & 1   \\
+		\end{bmatrix}
+		) = k
+	\end{equation*}
+\end{defn}
+
+\begin{pty}
+	If $\{v_1, v_2, ..., v_k\}$ in $\R^n$ is affinely independent:
+	the set $\{v_2 - v_1, v_3 - v_1, \dots, v_k - v_1\}$ is linearly independent;
+	the affine hull of $\{v_1, v_2, ..., v_k\}$ has dimension $k - 1$;
+	$k \le n + 1$
+\end{pty}
+
+
+\section{Piecewise-linear Optimization}
+
+\subsection{Definitions and formulation}
+\begin{defn}
+	\textbf{Piecewise-linear Function}: $f: \R^n \goes \R$ is (convex) \textbf{piecewise-lienar} (more accurately, \textit{piecewise-affine}) if it can be expressed as $f(x) = \max\limits_{i=1,...,m}(a_{i}^Tx+b_i)$
+\end{defn}
+
+\begin{example}\textbf{Piecewise-linear Optimization}\\
+	The optimization problem $\min f(x)$ where $f(x) = \max\limits_{i=1,...,m}(a_{i}^Tx+b_i)$ is equivalent to the linear programming problem
+	$$\min t$$ subject to $$a_{i}^Tx + b_i \le t, i = 1, ..., m$$
+	(For fixed x the optimal $t$ is $t = f(x)$)
+\end{example}
+\Note The corresponding matrix form:
+$\min \tilde{c}^T\tilde{x}$
+subject to
+$\tilde{A}\tilde{x} \le \tilde{b}$ where\\
+$\tilde{x} = \begin{bmatrix} x\\ t\\ \end{bmatrix}$, $\tilde{c} = \begin{bmatrix} 0\\ 1\\ \end{bmatrix}$, $\tilde{A} = \begin{bmatrix} a_{1}^T & -1 \\ \vdots & \vdots \\ a_{m}^T & -1\\ \end{bmatrix}$, $\tilde{b} = \begin{bmatrix} -b_1\\ \vdots \\ -b_m \\ \end{bmatrix}$
+(We put $b$ on the RHS and the rest on the LHS)\\
+
+\subsection{Examples($\ell_{1}, \ell_{\infty}$)}
+
+\begin{example}
+	\textbf{Minimizing a sum of piecewise-linear functions}\\
+	Consider the optimization problem:
+	$\min f(x) + g(x)$
+	where
+	$f(x) = \max\limits_{i=1,...,m}(a_{i}^Tx+b_i)$,
+	$g(x) = \max\limits_{i=1,...,p}(c_{i}^Tx+d_i)$.
+	The corresponding cost function is piecewise-linear (maximum of $mp$ affine functions):
+	$$f(x) + g(x) = \max\limits_{i=1,...,m; j=1,...,p} (a_i+c_j)^Tx + (b_i+d_j)$$
+	Hence the equivalence LP ($m + p$ inequalities)
+	$\min t_1 + t_2$
+	subject to
+	$$a_{i}^Tx + b_i \le t_1$$
+	$$c_{j}^Tx + d_j \le t_2$$
+	where $$i = 1, ..., m, j=1,...,p$$
+	Matrix form:
+	$\min \tilde{c}^T\tilde{x}$
+	subject to
+	$\tilde{A}\tilde{x} \le \tilde{b}$
+	where
+	$\tilde{x} = \begin{bmatrix} x\\ t_1\\ t_2\\ \end{bmatrix}$, $\tilde{c} = \begin{bmatrix} 0\\ 1\\ 1\\ \end{bmatrix}$, $\tilde{A} = \begin{bmatrix} a_{1}^T & -1 & 0\\ \vdots & \vdots \\ a_{m}^T & -1 & 0\\ c_{1}^T & 0 & -1\\ \vdots & \vdots \\ c_{p}^T & 0 & -1\\ \end{bmatrix}$, $\tilde{b} = \begin{bmatrix} -b_1\\ \vdots \\ -b_m \\ -d_1\\ \vdots \\ -d_p \\ \end{bmatrix}$
+\end{example}
+
+\begin{example}\textbf{$\ell_{\infty}$-Norm (Cheybshev) Approximation}\\
+	Consider the optimization problem: $\min \norm{Ax-b}_{\infty}$ with $A \in \R^{m\times n}, b\in \R^m$\\
+	(Recall that for $m-$vector $y$: $\norm{y}_{\infty} = \max\limits_{i}|y_i| = \max\limits_{i}\max\{y_i, -y_i\}$)\\
+	The equivalent LP (with variables $x$ and auxiliary scalar variable $t$) is
+	$\min t$
+	subject to
+	$$-t\textbf{1} \le Ax - b \le t\textbf{1}$$
+	Matrix form:
+	$\min \begin{bmatrix} 0\\1\\ \end{bmatrix}^T\begin{bmatrix} x\\ t\\ \end{bmatrix}$ subject to
+	$\begin{bmatrix} A & -\textbf{1}\\ -A & -\textbf{1}\\ \end{bmatrix}\begin{bmatrix} x\\ t\\ \end{bmatrix} \le \begin{bmatrix} b\\ -b\\ \end{bmatrix}$ (notice that \textbf{1} is vector)
+\end{example}
+
+\begin{example}\textbf{$\ell_{1}$-Norm Approximation}\\
+	Consider the optimization problem: $\min \norm{Ax-b}_{1}$ with $A \in \R^{m\times n}, b\in \R^m$\\
+	The equivalent LP is
+	$\min \sum\limits_{i=1}^{m}u_i$
+	subject to $$-u \le Ax - b \le u$$
+	Matrix form:
+	$\min \begin{bmatrix} 0\\\textbf{1}\\ \end{bmatrix}^T\begin{bmatrix} x\\ u\\ \end{bmatrix}$
+	subject to
+	$\begin{bmatrix} A & -I\\ -A & -I\\ \end{bmatrix}\begin{bmatrix} x\\ u\\ \end{bmatrix} \le \begin{bmatrix} b\\ -b\\ \end{bmatrix}$
+\end{example}
+\Note $\ell_{1}-$norm approximation is more robust against outliers.
+
+\subsection{‘Nullspace condition’ for exact recovery}
+
+\begin{example}\textbf{Sparse signal recovery via $\ell_{1}$-Norm minimization}\\
+	$\hat{x}\in \R^n$ is unkonwn (know to be very sparse),
+	we make linear measurement $y$ ($y = A\hat{x}$ with $A \in \R^{m\times n}, m < n$)
+	then minimize $\norm{x}_{1}$
+	subject to
+	$Ax = y$
+	gives an estimate with the smallest $\ell_1-$norm s.t it is consistent with the measurement
+	(i.e. $Ax = y$)
+\end{example}
+
+\textit{Question}: Subject to $Ax = y$, when is minimizing $card(x)$ equivalent to minimizing $\norm{x}_{1}$?
+
+\begin{defn}\textbf{Exact recovery}\\
+	We say $A$ allows \textbf{exact recovery} of \underline{$k$-sparse vectors}
+	(at most $k$ non-zero entries) if
+	$\hat{x} = \argmin\limits_{Ax=y}\norm{x}_{1}$
+	when $y = A\hat{x}$ and \underline{$card(x) \le k$}
+	(a property of (the nullspace) of the ‘measurement matrix’ $A$)
+\end{defn}
+
+\begin{remark}
+	In other words, when the measurement is given ($y = A\hat{x}$)
+	and the true solution is $k$-sparse ($card(x) \le k$),
+	the minimizer $\argmin\limits_{Ax=y}\norm{x}_{1}$
+	coincides with the exact true solution $\hat{x}$,
+	we say the measurement matrix $A$ allows exact recovery of $k$-sparse vectors
+\end{remark}
+\Note $A$ depends on how we measure the original true signal $\hat{x}$
+
+\begin{notation}
+	$x$ has support $I \subseteq \{1,2,..., n\}$ if $x_i = 0$ for $i \not\in I$
+\end{notation}
+
+\begin{notation}
+	$P_I$: projection matrix on $n$-vectors with support $I$
+	(i.e. $P_I$ is diagonal, $(P_I)_{jj} = 1$ if $j \in I$ and $=0$ otherwise)
+\end{notation}
+
+\begin{thm}
+	Necessary and sufficient condition for exact recovery of $k$-sparse vectors:
+	$$|z^{(1)}| + ... + |z^{(k)}| < \half \norm{z}_{1}, \forall z \in nullspace(A)\backslash \{0\}$$
+	where $z^{(i)}$ denotes component $z_i$ in order of decreasing magnitude
+	(i.e. $|z^{(1)}| \ge |z^{(2)}| \ge ... \ge |z^{(n)}|$)
+\end{thm}
+
+\proof Notice that $$|z^{(1)}| + ... + |z^{(k)}| < \half \norm{z}_{1}, \forall z \in nullspace(A)\backslash \{0\}$$
+is equivalent to $\norm{P_Iz}_{1} \le \half\norm{z}_{1}$ for all nonzero $z$ in $null(A)$
+and for all support set $I$ with $|I|\le k$
+(since the inequality holds for largest $k$ component,
+it must hold for arbitrary index set with cardinality $\le k$).
+We call this \textbf{nullspace condition}.
+We want to show $\norm{P_Iz}_{1} \le \half\norm{z}_{1}
+	\iff \hat{x} = \argmin\limits_{Ax = y}\norm{x}_{1}$.\\
+($\imp$): Suppose $A$ satisfies the nullspace condition,
+let $\hat{x}$ be a $k$-sparse vector with support $I$ so we have $P_I\hat{x} = \hat{x}$,
+and define $y = A\hat{x}$ as usual.
+Consider any feasible x (i.e. satisfying $Ax = y$) that is different from $\hat{x}$.
+Denote $z = x - \hat{x}$, by assumption this implies $0 \neq z \in null(A)$.
+Then, we have
+\begin{equation*}
+	\begin{split}
+		\norm{x}_{1} &= \norm{\hat{x} + z}_{1} \ge \norm{\hat{x} + (z - P_Iz)}_{1} - \norm{P_Iz}_{1}\\
+		&= \sum_{k \in I}|\hat{x}_{k}| + \sum_{k \neq I}|z_k| - \norm{P_Iz}_{1}\\
+		&= \norm{\hat{x}}_{1} + \norm{z}_{1} - \norm{P_Iz}_{1} - \norm{P_Iz}_{1}\\
+		&= \norm{\hat{x}}_{1} + \norm{z}_{1} - 2\norm{P_Iz}_{1}\\
+		&> \norm{\hat{x}}_{1}
+	\end{split}
+\end{equation*}
+since the nullspace condition $\norm{P_Iz}_{1} \le \half\norm{z}_{1}$
+implies $\norm{z}_{1} - 2\norm{P_Iz}_{1} \ge 0$,
+hence $\hat{x} = \argmin\limits_{Ax = y}\norm{x}_{1}$.\\
+($\limp$): We prove by showing the contrapositive,
+suppose $A$ does not satisfy the nullspace condition,
+i.e. there exist some $0 \neq z \in null(A)$ with supp set $I, |I| \le k$,
+such that $\norm{P_Iz}_{1} \ge \half\norm{z}_{1}$. We want to show $A$ does not allow exact recovery.
+Pick an arbitrary $k$-sparse vector $\hat{x} = - P_{I}z$ and $y = A\hat{x}$,
+and denote $x = \hat{x} + z$, which satisfies $Ax = y$ (since $A(\hat{x} + z) = A\hat{x} = y$), then
+\begin{equation*}
+	\norm{x}_{1} = \norm{-P_Iz + z}_{1} = \norm{z}_{1} - \norm{P_Iz}_{1}
+	\le 2\norm{P_Iz}_{1} - \norm{P_Iz}_{1} = \norm{\hat{x}}_{1}
+\end{equation*}
+hence $\hat{x}$ is not the unique minimizer
+(i.e. $\hat{x} \neq \argmin\limits_{Ax = y}\norm{x}_{1}$),
+which finishes the proof.
+\qedhere
+
+\begin{remark}
+	$\half \norm{z}_{1}$ gives a bound on how ‘concentrated’ nonzero vectors in $nullspace(A)$ can be.
+	This implies that $k < \frac{n}{2}$. (However, this is difficult to verify for general $A$)
+\end{remark}
+
+\subsection{Linear classification}
+\begin{example}
+	Given a set of points $\{v_1, ..., v_N\}$ with binary labels $s_i \in \{-1, 1\}$,
+	need to find hyperplane that strictly separates the two classes, i.e.
+	\begin{equation*}
+		\begin{split}
+			&a^Tv_i + b > 0 \text{ if } s_i = 1\\
+			&a^Tv_i + b < 0 \text{ if } s_i = -1
+		\end{split}
+	\end{equation*}
+	which is equivalent to $s_i(a^Tv_i + b) \ge 1, i = 1, ..., N$.
+	Therefore, we have the following optimization problem
+	\begin{equation*}
+		minimize \text{ } \sum_{i=1}^{N}\max\{0, 1-s_i(a^Tv_i + b)\}
+	\end{equation*}
+	The equivalent LP:
+	\begin{equation*}
+		\begin{split}
+			&\text{minimize } \sum_{i=1}^{N}u_i\\
+			&\begin{split}
+				\text{subject to } &1-s_i(a^Tv_i + b) \le u_i\\
+				&0 \le u_i
+			\end{split}
+		\end{split}
+	\end{equation*}
+	In matrix form: $\min \begin{bmatrix} 0 \\ 0 \\ \textbf{1} \end{bmatrix}^T
+		\begin{bmatrix} a \\ b \\ u \end{bmatrix}$ subject to
+	$\begin{bmatrix}
+			-s_1v_{1}^T & -s_1   & -1     & 0      & \cdots & 0      \\
+			-s_2v_{2}^T & -s_2   & 0      & -1     & \cdots & 0      \\
+			\vdots      & \vdots & \vdots & \vdots & \ddots & \vdots \\
+			-s_Nv_{N}^T & -s_N   & 0      & 0      & \cdots & -1     \\
+			0           & 0      & -1     & 0      & \cdots & 0      \\
+			0           & 0      & 0      & -1     & \cdots & 0      \\
+			\vdots      & \vdots & \vdots & \vdots & \ddots & \vdots \\
+			0           & 0      & 0      & 0      & \cdots & -1     \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			a \\b\\u_1\\u_2\\\vdots\\u_n\\
+		\end{bmatrix} \le
+		\begin{bmatrix}
+			-1 \\-1\\\vdots\\-1\\0\\0\\\vdots\\0
+		\end{bmatrix}
+	$
+\end{example}
+\Note This is known as support vector machine.
+
+\section{Polyhedra}
+
+\subsection{Polyhedron}
+
+\begin{defn} \textbf{Polyhedron}:
+	A polyhedron is the \textit{solution set} of a \textit{finite} number of linear inequalities
+\end{defn}
+\Note The soln set can include equalities.
+
+\begin{remark}
+	The solution of the infinite set of linear inequalities
+	$a^Tx \le 1$ for all $a$ with $\norm{a}_{1}$ is the unit ball $\{x | \norm{x}\le 1\}$
+	and not a polyhedron.
+\end{remark}
+
+\Note \textbf{In this section we consider polyhedron in the form of $P = \{x | Ax \le b, Cx = d\} \neq \em$}.
+
+\begin{defn} \textbf{Lineality Space}:
+	The \textit{lineality space} of $P$ is $L = null(\begin{bmatrix}
+			A \\ C
+		\end{bmatrix})$
+	i.e. $\forall v \in L, Av = Cv = 0$.
+\end{defn}
+
+\begin{cor}
+	If $x \in P$, then $x + v \in P$ for all $v \in L$.
+\end{cor}
+
+\begin{defn} \textbf{Pointed Polyhedron}:
+	A polyhedron with lineality space $\{0\}$ is called pointed.
+	\textit{A polyhedron is pointed if it does not contain an entire line
+		(Goes off to inifinity in both directions).}
+\end{defn}
+
+\begin{remark}
+	In other words, a polyhedron $P$ is pointed if and only if $linspace(P) = \{0\}$, that is $linspace(P)$ has dimension $0$.
+\end{remark}
+
+\begin{example}\textbf{(Pointed polyhedra)}\\
+	Probability simplex $P = \{x \in \R^n | \textbf{1}^Tx = 1 , x \ge 0\}$\\
+	$P = \{(x,y,z) | |x| \le z, |y| \le z \}$
+\end{example}
+
+\begin{example}\textbf{(Not pointed polyhedra)}:\\
+	$P = \{x | a^Tx \le b\}$ $(n \ge 2)$ : $L = \{x | a^Tx = 0\}$\\
+	$P = \{x | -1 \le a^Tx \le 1\}$ $(n \ge 2)$ : $L = \{x | a^Tx = 0\}$\\
+	$P = \{(x,y,z) | |x| \le 1, |y| \le 1 \} : L = \{(0,0,z) | z \in \R\}$
+\end{example}
+
+\Note For this first two example $n \ge 2 :$ otherwise $L = \{0\}$ and hence pointed.
+
+\subsection{Face}
+
+\begin{defn} \textbf{Face}:
+	Let $J \subseteq \{1,2,...,m\}$ an index set, define $F_{J} = \{x \in P | a_{i}^Tx = b_{i}, \forall i \in J\}$.
+	If $F_{J} \neq \em$, it is called a \textit{face} of P.
+\end{defn}
+
+\begin{pty}
+	$F_J$ is a nonempty polyhedron, defined by the inequalities and equalities:
+	\begin{equation*}
+		\{x \in P | a_i^Tx \le b_i, \forall i \not\in J, a_i^Tx = b_i, \forall i \in J, Cx =d \}
+	\end{equation*}
+\end{pty}
+
+\begin{pty}
+	The number of faces is finite and at least one ($P$ itself is a face $P = F_{\em}$)
+\end{pty}
+
+\begin{pty}
+	Faces of $F_J$ are also faces of $P$.
+\end{pty}
+
+\begin{pty}
+	All faces have the same lineality space as $P$
+\end{pty}
+
+\begin{example}
+	Consider the following problem:
+	\begin{equation*}
+		\begin{bmatrix}
+			1  & -1 & 1  \\
+			1  & -1 & -1 \\
+			-1 & 1  & 1  \\
+			-1 & 1  & -1
+		\end{bmatrix}
+		\begin{bmatrix}
+			x_1 \\
+			x_2 \\
+			x_3
+		\end{bmatrix}
+		\le
+		\begin{bmatrix}
+			1 \\1\\1\\1
+		\end{bmatrix}
+	\end{equation*}
+	The solution set is a (non-pointed, hence include an entire line)
+	polyhedron: $P = \{x\in \R^3 \big| |x_1 - x_2| + |x_3| \le 1\}$.
+	The lineality space is the line: $L = \{(t,t,0) | t\in R\}$.\\
+	Example of faces of the given polyhedron $P$:\\
+	\textit{Three-dimensional face}: $F_{\em} = P$\\
+	\textit{Two dim faces (surface)}:\\
+	$F_{\{1\}} = \{x | x_1 - x_2 + x_3 = 1, x_1 \ge x_2, x_3 \ge 0\}$ (only the first equality holds)\\
+	$F_{\{2\}} = \{x | x_1 - x_2 - x_3 = 1, x_1 \ge x_2, x_3 \le 0\}$ (only the second equality holds)\\
+	$F_{\{3\}} = \{x | -x_1 + x_2 + x_3 = 1, x_1 \le x_2, x_3 \ge 0\}$ (only the third equality holds)\\
+	$F_{\{4\}} = \{x | -x_1 + x_2 - x_3 = 1, x_1 \le x_2, x_3 \le 0\}$ (only the fourth equality holds)\\
+	\textit{One dim faces (line/edge)}:\\
+	$F_{\{1,2\}} = \{x | x_1 - x_2 = 1, x_3 = 0\}$
+	(first two equality: $x_1 - x_2 + x_3 = 1, x_1 - x_2 - x_3 = 1 \imp x_1 - x_2 = 1, x_3 = 0$)\\
+	$F_{\{1,3\}} = \{x | x_1 = x_2, x_3 = 1\}$\\
+	$F_{\{2,4\}} = \{x | x_1 = x_2 = 1, x_3 = -1\}$\\
+	$F_{\{3,4\}} = \{x | x_1 - x_2 = -1, x_3 = 0\}$\\
+	and $F_J$ is empty for all other $J$.
+\end{example}
+
+
+\begin{defn}\textbf{Minimal face}:
+	A face of $P$ is a \textit{minimal face} if it does not contain another face of $P$.
+\end{defn}
+
+\begin{example}
+	The minimal face of polyhedron in the above example: $F_{\{1,2\}}, F_{\{1,3\}}, F_{\{2, 4\}}, F_{\{3,4\}}$.
+	(Intuition: More contraints, smaller face)
+\end{example}
+
+\begin{thm}
+	If $F$ is a face of $P$ and $F' \subseteq F$, then $F'$ is a face of $P$ iff $F'$ is a face of $F$.
+\end{thm}
+
+\begin{thm}
+	A face is minimal if and only if it is an affine set
+\end{thm}
+
+\proof Let $F_J$ be a face where $a_{i}^Tx \le b_i, \forall i \not\in J$, $a_{i}^Tx = b_i, \forall i \in J$
+and $Cx = d$. Then, partition the inequalities $a_{i}^Tx \le b_i (i \not\in J)$ into three groups:\\
+(1) $i \in J_{1}$ if $a_{i}^Tx = b_{i}$ for all $x$ in $F_{J}$\\
+(2) $i \in J_{2}$ if $a_{i}^Tx < b_{i}$ for all $x$ in $F_{J}$\\
+(3) $i \in J_{3}$ if there exist points $\hat{x}, \tilde{x} \in F_{J}$ with $a_{i}^T\hat{x} < b_{i}$
+and $a_{i}^T\tilde{x} = b_{i}$.\\
+If $J_{3}$ is not empty then there exist some $j \in J_{3}$, $F_{J\cup \{j\}}$ is a proper face of $F_{J}$ since\\
+(a) $F_{J\cup \{j\}} \neq \em$ ($ \because \tilde{x}\in F_{J\cup \{j\}}$) and
+(b) $F_{J\cup \{j\}} \neq F_{J}$ ($\because \hat{x}\not\in F_{J}$).
+Therefore, if $F_{J}$ is a minimal face then $J_{3} = \em$ and $F_{J}$ is the solution set of
+$a_{i}^Tx = b_{i}$ for $i \in J_{1} \cup J$ and $Cx = d$. (Unfinished)
+\qedhere
+
+\begin{thm}
+	All minimal faces are translates of the linearlity space of P.
+	(Since all faces have the same linearity space)
+\end{thm}
+
+\subsection{Extreme Point and Rank Test}
+
+\begin{defn} \textbf{Extreme Point (vertex)}:
+	A minimal face of a pointed polyhedron.
+\end{defn}
+
+\Note Question: Is a minimal face of a pointed polyhedron always a single point?
+Answer: A face of polyhedron $P$ is an extreme point or a vertex if it has dimension $0$.
+
+\begin{remark}
+	Other definition: $x \in P$ is a vertex if there exist $c$ such that $c^Tx < c^Ty$ for all $y \neq x$, where $y\in P$.
+	Moreover, if $P$ is convex, $x \in P$ is an extreme point of $P$ if it cannot be written as $\lambda y + (1-\lambda)z$
+	for $y, z \in P$ where $y, z \neq x$, and $0 \le \lambda \le 1$.
+\end{remark}
+
+\text{}\\
+\textit{Question}: Given $\hat{x} \in P$, is it an extreme point?\\
+\textbf{Rank Test}: Denote $J(\hat{x}) = \{i_1, i_2, ..., i_k\}$ be the indices of the \textbf{active contraints} at $\hat{x}$:
+$a_{i}^T\hat{x} = b_{i}$ for $i \in J(\hat{x})$ and $a_{i}^T\hat{x} < b_{i}$ for $i \not\in J(\hat{x})$.
+
+\Note $J(\hat{x})$ depends on the point $\hat{x}$ given.
+
+\begin{pty}
+	$\hat{x} \in P$ is a extreme point if $rank(\begin{bmatrix} A_{J(\hat{x})} \\ C \end{bmatrix}) = n$
+	where $A_{J(\hat{x})}= \begin{bmatrix} a_{i1}^T \\ \vdots \\ a_{ik}^T \end{bmatrix}$
+\end{pty}
+
+\Note This property tells us to only care about the active contraints instead of all contratints in $A$.
+The intuition is the active contraints generate by some point leads to a full rank system and hence unique solution (extreme point).
+
+\proof Face $F_{J(\hat{x})}$ is defined as the set of points $x$ satisfies $(*)$:
+$a_{i}^Tx = b_{i}$ for $i \in J(\hat{x})$ and $a_{i}^Tx \le b_{i}$ for $i \not\in J(\hat{x})$ (and $Cx = d$ as well).
+Then clearly by defintion we have $\hat{x} \in F_{J(\hat{x})}$. If the rank condition is satisfied (i.e. full rank),
+then we know that there is an unique solution, in this case which is given, $\hat{x}$.
+Therefore we have $F_{J(\hat{x})} = \{\hat{x}\}$ is a minimal face ($dim(F_{J(\hat{x})}) = 0$, does not contain any other face).
+If the rank condition does not hold, then there exist some $v \neq 0$ such that $a_{i}^Tv = 0$ for $i \in J(\hat{x})$ and $Cv = 0$.
+This implies that $x = \hat{x} \pm tv$ is also in $F_{J(\hat{x})}$ for \textit{small} positive and negative $t$,
+therefore the face $F_{J(\hat{x})}$ is not minimal.
+\qedhere
+
+\begin{example}
+	Consider $\begin{bmatrix}
+			-1 & 0  \\
+			2  & 1  \\
+			0  & -1 \\
+			1  & 2
+		\end{bmatrix}x \le \begin{bmatrix}
+			0 \\ 3\\ 0\\ 3
+		\end{bmatrix}$,
+	then obviously $\hat{x} = (1, 1)$ is in $P$ since $\begin{bmatrix}
+			-1 & 0  \\
+			2  & 1  \\
+			0  & -1 \\
+			1  & 2
+		\end{bmatrix}\hat{x} = \begin{bmatrix}
+			-1 \\ 3\\ -1\\ 3
+		\end{bmatrix} \le \begin{bmatrix}
+			0 \\ 3\\ 0\\ 3
+		\end{bmatrix}$, and the active constraints $J(\hat{x}) = \{2, 4\}$.
+	(here $C$ is empty since all inequalities)
+	Then, $A_{J(\hat{x})} = \begin{bmatrix}
+			2 & 1 \\
+			1 & 2
+		\end{bmatrix}$ has rank $2$ = \# of cols, hence $\hat{x}$ is an extreme point.
+\end{example}
+
+\begin{example}
+	Consider $A: \begin{bmatrix}
+			-1 & 0  & 0  \\
+			0  & -1 & 0  \\
+			0  & 0  & -1 \\
+		\end{bmatrix}\begin{bmatrix}
+			x_1 \\ x_2\\ x_3
+		\end{bmatrix} \le \begin{bmatrix}
+			0 \\ 0\\ 0
+		\end{bmatrix}$ and $C: x_1 + x_2 + x_3 = 1$, then some extreme points are listed as follow:\\
+	$\hat{x} = (1, 0, 0) \imp J(\hat{x}) = \{2, 3\} \imp
+		rank(\begin{bmatrix} A_{J(\hat{x})} \\ C \end{bmatrix}) =
+		rank(\begin{bmatrix}
+			0 & -1 & 0  \\
+			0 & 0  & -1 \\
+			1 & 1  & 1  \\
+		\end{bmatrix}) = 3$ and \\
+	$\hat{x} = (0, 1, 0) \imp J(\hat{x}) = \{1, 3\} \imp
+		rank(\begin{bmatrix} A_{J(\hat{x})} \\ C \end{bmatrix}) =
+		rank(\begin{bmatrix}
+			-1 & 0 & 0  \\
+			0  & 0 & -1 \\
+			1  & 1 & 1  \\
+		\end{bmatrix}) = 3$ and \\
+	$\hat{x} = (0, 0, 1) \imp J(\hat{x}) = \{1, 2\} \imp
+		rank(\begin{bmatrix} A_{J(\hat{x})} \\ C \end{bmatrix}) =
+		rank(\begin{bmatrix}
+			-1 & 0  & 0 \\
+			0  & -1 & 0 \\
+			1  & 1  & 1 \\
+		\end{bmatrix}) = 3$
+\end{example}
+
+\begin{example}
+	Consider nonempty pointed polyhedron $P = \{x \ge 0, Cx = d\}$, show:
+	(1) $\hat{x}$ is an extreme point if $\hat{x} \in P$ and $rank([c_{i1}, c_{i2}, ... c_{ik}]) = k$
+	where $c_j$ is column $j$ of $C$ and $\{i_1, i_2, ..., i_k\} = \{i | \hat{x}_{i} > 0\}$
+	(2) an extreme point $\hat{x}$ has at most $rank(C)$ nonzero elements
+\end{example}
+\proof WLOG, assume $\{i_1, \dots, i_k\} = \{1, \dots, k\}$. Apply rank test to $\begin{bmatrix}
+		-I \\ C
+	\end{bmatrix} = \begin{bmatrix}
+		-I_k & 0        \\
+		0    & -I_{n-k} \\
+		D    & E        \\
+	\end{bmatrix}$ where $D = [c_1 \dots c_k]$ and $E = [c_{k+1} \dots c_n]$.
+\red{inequalities $k+1, ..., n$ are active at $\hat{x}$}.
+$\hat{x}$ is an extreme point if the submatrix of active constraints has rank $n$, i.e.
+\begin{equation*}
+	rank(\begin{bmatrix}
+		0 & -I_{n-k} \\
+		D & E
+	\end{bmatrix}) = n - k + rank(D) = n \imp rank(D) = k
+\end{equation*}
+\qedhere
+
+\begin{defn}
+	\textbf{Doubly stochastic matrix}: an $n \times n$ matrix $X$ is doubly stochastic if
+	\begin{equation*}
+		X_{ij} \ge 0, i, j = 1, ..., n, X\textbf{1} = 1, X^T\textbf{1} = 1
+	\end{equation*}
+	\Note nonnegative matrix with column and row sums equal to one,
+	set of doubly stochastic matrices form is a pointed polyhedron in $\R^{n\times n}$
+\end{defn}
+
+\begin{defn}
+	A \textbf{permutation matrix} is a doubly stochastic matrix with elements 0 or 1
+\end{defn}
+
+\begin{example} \textbf{Birkhoff’s theorem (Birkhoff von Neumann Theorem)}
+	The extreme points are the permutation matrices.
+	(Set of $n \times n$ doubly stochastic matrices forms a convex polytope whose vertices are the $n \times n$ permutation matrices)
+\end{example}
+
+
+\section{Convexity}
+
+\subsection{Convex Hull}
+
+\begin{defn}\textbf{Convex combination}:
+	A convex combination of points $v_1, \dots , v_k$ is a linear combination
+	$x = \theta_1v_1 + \theta_2v_2 + ... + \theta_kv_k$ with $\theta_i \ge 0$ and $\sum_{i=1}^{k}\theta_i = 1$
+\end{defn}
+
+\begin{defn}\textbf{Convex set}:
+	A set $S$ is convex if it contains all convex combinations of points in $S$.
+\end{defn}
+
+\begin{example}
+	Some examples of convex sets: affine sets ($Cx = d, Cy = d \imp C(\theta x + (1-\theta)y) = d,\forall \theta \in \R$)
+	and polyhedra ($Ax \le b, Ay \le b \imp A(\theta x + (1-\theta)y) \le b, \forall \theta \in [0,1]$)
+\end{example}
+
+\begin{defn}
+	\textbf{Convex hull}: The convex hull of a set $S$: the set of all convex combinations of points in $S$, denote as $convS$
+\end{defn}
+
+\begin{defn}
+	\textbf{polytope:} The convex hull $conv\{v_1, v_2, \dots, v_k\}$ of a finite set of points.
+\end{defn}
+
+\begin{remark}
+	$convS$ is the set of points $x$ that can be expressed as
+	$x = \theta_1v_1 + \theta_2v_2 + ... + \theta_kv_k$ with $\theta_i \ge 0$ and
+	$\sum_{i=1}^{k}\theta_i = 1$, where $v_1, \dots , v_k \in S$.
+	(This directly follows from the defintion above)
+\end{remark}
+
+\begin{thm}
+	(\textbf{Caratheodorys theorem}) If $S \subseteq \R^n$ then $k$ can be taken less than or equal to $n+1$.
+	(e.g in $\R^2$, every $x \in convS$ can be written as a convex combination of $3$ points in $S$)
+\end{thm}
+\proof Start from any convex decomposition of $x$:
+\begin{equation*}
+	\begin{bmatrix}
+		x \\ 1
+	\end{bmatrix} =
+	\begin{bmatrix}
+		v_1 & v_2 & \dots & v_m \\ 1 & 1 & ... & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		\theta_1 \\ \theta_2 \\ \vdots \\ \theta_m
+	\end{bmatrix}
+\end{equation*}
+Let $P$ be the set of vectors $\theta = (\theta_1, \theta_2, ..., \theta_m)$ that satisfies these conditions.
+Then $P$ is a nonempty polyhedron described in 'standard form' from \textit{Example $3.7$}
+(where $C = \begin{bmatrix}
+	v_1 & v_2 & \dots & v_m \\ 1 & 1 & ... & 1
+\end{bmatrix}$ and
+$d = \begin{bmatrix}
+	x \\ 1
+\end{bmatrix}$ and
+$x = \theta \ge 0$). Hence, if $\hat{\theta} \in P$ is an extreme point, it must satisfy the rank test
+\begin{equation*}
+	rank(\begin{bmatrix}v_{i1} & v_{i2} & \dots & v_{ik} \\ 1 & 1 & ... & 1\end{bmatrix}) = k
+\end{equation*}
+where $\{i_1, \dots, i_k\} = \{i | \hat{\theta}_{i} > 0\}$. \red{This rank condition implies $k \le n+1$.}
+
+\subsection{Polyhedral Cone}
+
+\begin{defn} \textbf{Cone}:
+	$S$ is a cone if $x \in S$ implies $\a x \in S$ for all $\a \ge 0$
+\end{defn}
+
+\begin{defn} \textbf{Convex cone}:
+	A nonempty set $S$ with the property $x_1, x_2, \dots, x_k \in S$ and
+	$\theta_1 \ge 0, \dots, \theta_k \ge 0 \imp \theta_1 x_1 + ...  \theta_k x_k \in S$
+\end{defn}
+
+\Note In other words, all nonnegative combinations of points in $S$ are in $S$.
+$S$ is a convex set as well as a cone by the definition.
+
+\begin{example}
+	\textit{Examples of convex cone}: all subspaces; a polyhedral cone defined by $S = \{x | Ax \le 0, Cx = 0\}$
+	(finite system of homogeneous linear inequalities).
+\end{example}
+
+\begin{defn} \textbf{Conic hull}:
+	A conic hull of set $S$ is the set of all nonnegative combinations of points in $S$. This is also known as the cone genereated by $S$, denoted
+	by $cone S$.
+\end{defn}
+
+\begin{defn} \textbf{Finitely generated cone}
+	The conic hull $cone\{v_1, v_2, ..., v_k\}$ of a finite set.
+\end{defn}
+
+\begin{defn} \textbf{Pointed polyhedral cone}
+	Consider a polyhedral cone $K = \{x \in \R^n | Ax \le 0, Cx = 0\}$, the linearity space is $null(\begin{bmatrix}
+			A \\ C
+		\end{bmatrix})$. Hence, $K$ is pointed if $rank(\begin{bmatrix}
+			A \\ C
+		\end{bmatrix}) = n$, in which case it has one extreme point (the origin). \textit{Recall that a polyhedron with lineality space $\{0\}$ is called pointed.}
+\end{defn}
+
+\begin{remark}
+	The one-dimensional faces are called \textbf{extreme rays}.ß
+\end{remark}
+
+\begin{defn} \textbf{Recession(Asymptotic) cone}:
+	The recession/asymptotic cone of a polyhedron $P = \{x|Ax \le b, Cx = d\}$ is $K = \{y | Ay \le 0, Cy = 0\}$.
+\end{defn}
+
+\begin{pty}
+	(1)$K$ has the same lineality space as $P$; (2)$K$ is pointed iff $P$ is pointed;
+	(3) if $x \in P$ then $x + y\in P$ for all $y \in K$
+\end{pty}
+
+
+\subsection{Decomposition}
+
+\begin{thm}
+	Every polyhedron $P$ can be decomposed as
+	\begin{equation*}
+		P = L + Q = L + conv\{v_1, \dots , v_r\} + cone\{w_1, \dots, w_s\}
+	\end{equation*}
+	where $L$ is the lineality space and $Q$ is a pointed polyhedron.
+	Moreover, $\{v_1, \dots , v_r\}$ are the extreme points of $Q$ and
+	$\{w_1, \dots, w_s\}$ generate the extreme rays of the recession cone of $Q$.
+\end{thm}
+
+\Note In general, it is extremely costly to compute from inequality description of $P$.
+
+
+
+\section{Alternatives}
+
+\subsection{Alternatives for linear inequalities}
+\begin{thm}
+	For given $A, b$, exactly one of the following two statements is true:\\
+	(1) there exists an $x$ that satisfies $Ax \le b$\\
+	(2) there exists an $z$ that satisfies $z \ge 0, A^Tz = 0, b^Tz < 0$
+\end{thm}
+
+\proof First notice that (1) and (2) cannot be both true since (1): $Ax \le b, z\ge 0 \imp z^T(Ax - b) \le 0$
+but (2): $A^Tz = 0, b^Tz < 0 \imp z^T(Ax - b) > 0$. It suffices to show the statements cannot be both false:
+whenever (1) is false, (2) has to be true. We'll do this by induction on the column dimension of $A$.\\
+Basic Case: $A$ has zero columns, and we have (1) $b \ge 0$, then (2) $z \ge 0, b^Tz < 0$ cannot be true.\\
+Induction Step: Assume holds for set of inequalities with $n-1$ variables ($n-1$ columns?).
+Now consider inequality $Ax \le b$ where $A$ is an $m \times n$ matrix, and divide it into three index groups:
+$I_{+} = \{i | A_{in} > 0\}$, $I_{0} = \{i | A_{in} = 0\}$, $I_{-} = \{i | A_{in} < 0\}$.
+Scale the inequalities with $A_{in} \neq 0$ to get an equivalent system:
+\begin{equation*}
+	\sum_{k=1}^{n-1}C_{ik}x_{k} + x_{n} \le d_{i} \text{ for } i \in I_{+}
+\end{equation*}
+\begin{equation*}
+	\sum_{k=1}^{n-1}C_{ik}x_{k} - x_{n} \le d_{i} \text{ for } i \in I_{-}
+\end{equation*}
+\begin{equation*}
+	\sum_{k=1}^{n-1}A_{ik}x_{k} \le b_{i} \text{ for } i \in I_{0}
+\end{equation*}
+where 
+$C_{ik} = \begin{cases}
+	A_{ik}/A_{in} & i \in I_{+} \\
+	-A_{ik}/A_{in} & i \in I_{-} \\
+\end{cases}$ and 
+$d_{i} = \begin{cases}
+	b_{i}/A_{in} & i \in I_{+} \\
+	-b_{i}/A_{in} & i \in I_{-} \\
+\end{cases}$. The inequalities indexed by $I_{+}$ and $I_{−}$ hold for some $x_{n}$ iff 
+\begin{equation*}
+	\max_{i\in I_{-}}(\sum_{k=1}^{n-1}C_{ik}x_{k} - d_{i}) \le \min_{i\in I_{+}}(d_{i} - \sum_{k=1}^{n-1}C_{ik}x_{k})
+\end{equation*}. Therefore $Ax \le b$ is solvable iff there exist $(x_{1}, \dots, x_{n-1})$ s.t.
+\begin{equation*}
+	\sum_{k=1}^{n-1}(C_{ik}+C_{jk})x_{k} \le d_{i} + d_{j} \text{ for all } i \in I_{-}, j \in I_{+}
+\end{equation*}
+\begin{equation*}
+	\sum_{k=1}^{n-1}A_{ik}x_{k} \le b_{i} \text{ for all } i \in I_{0}
+\end{equation*}
+which is a system of inequalities with $n-1$ variables. If this system is infeasible, then there exist $u_{ij}$ 
+where $i \in I_{-}, j \in I_{+}$ and $v_{i}$ where $i \in I_{0}$ such that 
+\begin{equation*}
+	u_{ij} \ge 0 \text{ for } i \in I_{-}, j \in I_{+}
+\end{equation*}
+\begin{equation*}
+	v_{i} \ge 0 \text{ for } i \in I_{0}
+\end{equation*}
+\begin{equation*}
+	\sum_{i\in I_{-}, j \in I_{+}} (C_{ik} + C_{jk})u_{ij}  + \sum_{i\in I_{0}} v_{i}A_{ik} = 0, k = 1, \dots, n-1
+\end{equation*}
+\begin{equation*}
+	\sum_{i\in I_{-}, j \in I_{+}} (d_{i} + d_{j})u_{ij} + \sum_{i\in I_{0}} b_{i}v_{i} < 0
+\end{equation*}
+Define 
+\begin{equation*}
+	z_{i} = \frac{1}{-A_{in}}\sum_{j\in I_{+}}u_{ij} \text{ for } i \in I_{-}
+\end{equation*}
+\begin{equation*}
+	z_{i} = \frac{1}{A_{jn}}\sum_{i\in I_{-}}u_{ij} \text{ for } j \in I_{+}
+\end{equation*}
+\begin{equation*}
+	z_{i} = v_{i} \text{ for } i \in I_{0}
+\end{equation*}
+to get a vector $z$ that satisfies $z \ge 0, A^Tz = 0, b^Tz < 0$.
+\qedhere
+
+\Note $z$ in statement 2 is a \textbf{certificate} of infeasibility of $Ax \le b$.
+
+\subsection{Farkas’ lemma and other variants}
+
+\begin{lemma}
+	For given $A, b$, exactly one of the following two statements is true:\\
+	(1) there exists an $x$ that satisfies $Ax = b, x\ge 0$\\
+	(2) there exists an $y$ that satisfies $A^Ty \ge 0, b^Ty < 0$
+\end{lemma}
+
+\proof Apply previous thm of alternatives to the following system:
+\begin{equation*}
+	\begin{bmatrix}
+		A \\ -A \\ -I
+	\end{bmatrix} x \le
+	\begin{bmatrix}
+		b \\ -b \\ 0
+	\end{bmatrix}
+\end{equation*}
+Then we know that this system is \underline{infeasible} iff there exists $(u,v,w)$ s.t.
+$u, v, w \ge 0, A^T(u-v) = w \ge 0$ and $b^T(u-v) < 0$. Denote $y = u-v$, then we have the desiring
+statement.
+
+\Note \textbf{Geometric interpretation} (1) $b$ is in the cone generated by the columns of $A$
+(2) the hyperplane $y^T z = 0$ separates $b$ from $a_1,\dots , a_m$
+(since $A^Ty \ge 0$ and $b^Ty < 0$, which means that $A$ and $b$ is on the different side of the hyperplane).
+
+\subsection{Mixed inequalities and equalities}
+\begin{lemma}
+	Now given $A, C, b, d$, exactly one of the following two statements is true:\\
+	(1) there exists an $x$ that satisfies $Ax \le b, Cx = d$\\
+	(2) there exists an $y, z$ that satisfies $z \ge 0, A^Tz + C^Ty = 0, b^Tz + d^Ty < 0$
+\end{lemma}
+\proof Write $Cx = d$ as $Cx \le d$ and $-Cx \le -d$, then apply thm 5.1 to the linear system
+\begin{equation*}
+	\begin{bmatrix}
+		A \\ C \\ -C
+	\end{bmatrix} x \le
+	\begin{bmatrix}
+		b \\ d \\ -d
+	\end{bmatrix}
+\end{equation*}
+
+\subsection{Strict inequalities}
+
+\begin{lemma}
+	Now given $A, B, b, c$, exactly one of the following two statements is true:\\
+	(1) there exists an $x$ that satisfies $Ax < b, Bx \le c$\\
+	(2) there exists an $y, z$ that satisfies $y \ge 0, z \ge 0, A^Ty + B^Tz = 0$,
+	and $b^Ty + c^Tz < 0$ or $b^Ty + c^Tz = 0$ (when $y \neq 0$)
+\end{lemma}
+\proof Notice that (1) is equivalent to: $\exists u, t$ such that $Au \le tb - \textbf{1}$
+and $Bu \le tc, t\ge 1$.
+
+
+\section{Duality}
+
+\subsection{Dual of LP}
+We start this section by two form of LP with the same parameters $A \in \R^{m\times n}, c\in \R^{n}, b\in \R^{m} $
+\begin{example}
+	LP in 'inequality form' (\textbf{primal} problem)
+	\begin{equation*}
+		\begin{split}
+			&\text{minimize } c^Tx\\
+			&\text{subject to } Ax \le b
+		\end{split}
+	\end{equation*}
+	LP in 'standard form' (the \textbf{dual} of the first LP)
+	\begin{equation*}
+		\begin{split}
+			&\text{maximize } -b^Tz\\
+			&\begin{split}
+				\text{subject to } &A^Tz + c = 0\\
+				&z \ge 0
+			\end{split}
+		\end{split}
+	\end{equation*}
+\end{example}
+
+\begin{notation}
+	Primal and Dual optimal\\
+	$p^*$: primal optimal value; $p^* = +\infty$ if primal is infeasible, $p^* = -\infty$ if primal is unbounded.\\
+	$d^*$: dual optimal value; $d^* = -\infty$ if dual is infeasible, $d^* = +\infty$ if dual is unbounded.
+\end{notation}
+
+
+\begin{thm} (\textbf{Duality theorem})
+	If primal or dual problem is feasible, then $p* = d*$. Moreover, if $p^* = d^*$ is finite, 
+	then primal and dual optima are attained.
+\end{thm}
+
+\begin{pty} (\textbf{Lower bound property})
+	If $x$ is primal feasible and $z$ is dual feasible, then $c^Tx \ge - b^Tz$
+\end{pty}
+\proof Since $x, z$ are feasible,  $Ax \le b$ and $A^Tz + c = 0, z \ge 0$, then
+\begin{equation*}
+	0 \le z^T(b-Ax) = z^Tb - z^TAx = b^Tz - x^TA^Tz = b^Tz + x^Tc = b^Tz + c^Tx
+\end{equation*}
+\qedhere
+
+\Note $b^Tz + c^Tx$ is the \textbf{Duality Gap} associated with primal and dual feasible $x, z$
+
+\begin{thm} (\textbf{Weak Duality})
+	$p^* \ge d^*$
+\end{thm}
+\proof Immediate comes from lower bound property. \qedhere
+
+\begin{thm} (\textbf{Strong Duality})
+	If primal and dual problems are feasible, then there exist $x^*, z^*$ that satisfy
+	\begin{equation*}
+		c^Tx^* = -b^Tz^*, Ax^* \le b, A^Tz^* + c = 0, z^* \ge 0
+	\end{equation*}
+	Combined with the lower bound property, this implies that\\
+	(a) This $x^*$ and $z^*$ is the primal/dual optimal; (b) The primal and dual optimal values are finite and equal 
+	(i.e. $p^* = c^Tx^* = -b^Tz^* = d^* < \infty$)
+\end{thm}
+\proof We show that there exist $x^*, z^*$ that satisfy 
+\begin{equation*}
+	\begin{bmatrix}
+		A & 0 \\ 0 & -I \\ c^T & b^T
+	\end{bmatrix}
+	\begin{bmatrix}
+		x^* \\ z^*
+	\end{bmatrix} \le
+	\begin{bmatrix}
+		b \\ 0 \\ 0
+	\end{bmatrix}
+\end{equation*} and 
+\begin{equation*}
+	\begin{bmatrix}
+		0 & -A^T
+	\end{bmatrix}
+	\begin{bmatrix}
+		x^* \\ z^*
+	\end{bmatrix} = c
+\end{equation*}
+Notice that the last equation is $c^Tx^* + b^Tz^* \le 0$, we do not need $c^Tx^* + b^Tz^* \ge 0$, 
+since by lower-bound property any solution would necessarily satisfies this equation and 
+hence satisfies $c^Tx^* + b^Tz^* = 0$. To proce such a solution exist we can show the alternative system
+\begin{equation*}
+	u \ge 0, t \ge 0, A^Tu + tc = 0, Aw \le tb, b^Tu + c^Tw < 0
+\end{equation*}
+has no solution. To show this, we discuss by cases. First, if $t > 0$, define $\tilde{x} = w/t, \tilde{z} = u/t$, 
+we can rewrite the alternative system as
+\begin{equation*}
+	\tilde{z} \ge 0, A^T\tilde{z} + c = 0, A\tilde{x} \le b, b^T\tilde{z} + c^T\tilde{x} < 0
+\end{equation*}
+Notice the last equation $b^T\tilde{z} + c^T\tilde{x} < 0 \imp c^T\tilde{x} < -b^T\tilde{z}$ contradicts with the 
+lower bound property. Second, if $t = 0$: 
+(1) $b^Tu < 0$: $u \ge 0, A^Tu = 0, b^Tu < 0$ contradicts feasibility of $Ax \le b$, hence $b^Tu \ge 0$; 
+(2) $c^Tw < 0$: $Aw \le 0, c^Tw < 0$ contradicts feasibility of $A^Tz + c = 0, z \ge 0$, hence $c^Tw \ge 0$. 
+Therefore $b^Tu + c^Tw \ge 0$, which means the alternative system has no solution.
+\qedhere
+
+\begin{example}
+	\textbf{Primal Infeasible}: If primal optimal value $p^* = +\infty$, then dual optimal value $d^* = +\infty$ or $d^* = -\infty$.
+\end{example}
+\proof If primal is infeasible, then by \textit{thm 5.1}, there exist $w$ such that $w \ge 0, A^Tw = 0, b^Tw < 0$. 
+Suppose the dual is feasible, there must be at least one feasibile point, denote $z$, which satisfies
+\begin{equation*}
+	z + tw \ge 0, A^T(z + tw) + c = A^Tz + c + tA^Tw = 0 + t \times 0 = 0
+\end{equation*} 
+for all $t \ge 0$, hence $z + tw$ is dual feasibile for all $t \ge 0$. Take $t \goes \infty$, we have
+\begin{equation*}
+	-b^T(z + tw) = -b^Tz - tb^Tw \goes \infty
+\end{equation*}
+which implies the dual problem is unbounded above. (\red{Then $d^* = + \infty$, but why have 'or $d^* = -\infty$'?})
+\qedhere
+
+\begin{example}
+	\textbf{Dual Infeasible}: If dual optimal value $d^* = -\infty$, then primal optimal value $p^* = -\infty$ or $p^* = +\infty$.
+\end{example}
+\proof If dual is infeasible, there does not exist $z \ge 0$ such that $A^Tz = -c$, then by \textit{lemma 5.2}, 
+there exist $w$ such that $Aw \ge 0, -c^Tw < 0$, i.e. exist $y = -w$ s.t. $Ay \le 0, c^Ty < 0$.
+Suppose the primal is feasible, there must be at least one feasibile point, denote $x$, which satisfies
+\begin{equation*}
+	A(x + ty) = Ax + tAy \le b + 0 = b
+\end{equation*} 
+for all $t \ge 0$, hence $x + ty$ is primal feasibile for all $t \ge 0$. Take $t \goes \infty$, we have
+\begin{equation*}
+	c^T(x + ty) = c^Tx + tc^Ty \goes -\infty
+\end{equation*}
+which implies the primal problem is unbounded below.
+\qedhere
+
+\begin{example}
+	\textbf{Exception to Strong Duality}: $p^* = +\infty, d^* = -\infty$ is possible.
+	Consider the primal problem with one variable and one inequality (where $A$ is zero matrix):
+	\begin{equation*}
+		\begin{split}
+			&\text{minimize } x\\
+			&\text{subject to } 0 \cdot x \le -1
+		\end{split}
+	\end{equation*}
+	and it's dual problem
+	\begin{equation*}
+		\begin{split}
+			&\text{maximize } z\\
+			&\begin{split}
+				\text{subject to } & 0 \cdot z + 1 = 0\\
+				&z \ge 0
+			\end{split}
+		\end{split}
+	\end{equation*}
+	Then both system are infeasible, $p^* = +\infty, d^* = -\infty$.
+\end{example}
+
+\Note Summary table see UCLA236A lecture slide 6-11.
+
+\subsection{Variants and Examples}
+\begin{example} \textbf{Standard form LP I}
+	\begin{equation*}
+		\begin{split}
+			&\text{minimize } c^Tx\\
+			&\text{subject to } Ax \le b
+		\end{split}
+	\end{equation*}
+	and 
+	\begin{equation*}
+		\begin{split}
+			&\text{maximize } -b^Tz\\
+			&\begin{split}
+				\text{subject to } &A^Tz + c = 0\\
+				&z \ge 0
+			\end{split}
+		\end{split}
+	\end{equation*}
+\end{example}
+
+\begin{example} \textbf{Standard form LP II}
+	\begin{equation*}
+		\begin{split}
+			&\text{minimize } c^Tx\\
+			&\begin{split}
+				\text{subject to } &Ax = b \\
+				& x \ge 0
+			\end{split}
+		\end{split}
+	\end{equation*}
+	and 
+	\begin{equation*}
+		\begin{split}
+			&\text{maximize } b^Ty\\
+			& \text{subject to } A^Ty \le c
+		\end{split}
+	\end{equation*}
+\end{example}
+
+
+\begin{example} \textbf{LP with inequality and equality constraints}
+	\begin{equation*}
+		\begin{split}
+			&\text{minimize } c^Tx\\
+			&\begin{split}
+				\text{subject to } &Ax \le b \\
+				& Cx = d
+			\end{split}
+		\end{split}
+	\end{equation*}
+	and 
+	\begin{equation*}
+		\begin{split}
+			&\text{maximize } -b^Tz - d^Ty\\
+			&\begin{split}
+				\text{subject to } &A^Tz + C^Ty + c = 0\\
+				& z \ge 0
+			\end{split}
+		\end{split}
+	\end{equation*}
+\end{example}
+
+\begin{example} \textbf{Piecewise-linear minimization}\\
+	minimize $f(x) = \max_{i = 1, \dots, m}(a_{i}^Tx + b_{i})$.\\
+	The LP formulation is 
+	\begin{equation*}
+		\begin{split}
+			&\text{minimize } t\\
+			& \text{subject to } 
+			\begin{bmatrix}
+				A & {\bf-1}
+			\end{bmatrix}
+			\begin{bmatrix}
+				x \\ t
+			\end{bmatrix} \le -b
+		\end{split}
+	\end{equation*}
+	the dual LP is
+	\begin{equation*}
+		\begin{split}
+			&\text{maximize } b^Tz\\
+			&\begin{split}
+				\text{subject to } &A^Tz = 0 \\
+				& {\bf 1}^Tz= 1 \\
+				& z \ge 0
+			\end{split}
+		\end{split}
+	\end{equation*}
+	Interpretation: for any $z \ge 0$ with $\sum_{i}z_{i} = 1$,
+	 $f(x) = \max_{i}(a_{i}^Tx + b_{i}) \ge z^T(Ax + b)$ for all $x$.
+	 This provides a lower bound on the optimal value of the PWL problem, i.e.
+	 \begin{equation*}
+		 \min_{x} f(x) \ge \min_{x} z^T(Ax + b) = \begin{cases}
+			 b^T \text{if } A^Tz = 0 \\ 
+			 -\infty \text{otherwise}
+		 \end{cases}
+	 \end{equation*}
+	 where the dual problem is to find the best lower bound of this type.\\
+	 \Note Strong Duality tells us that the best lower bound is actually tight.
+\end{example}
+
+\begin{example} \textbf{$l_{\infty}-$norm approximation}\\
+	minimize $\norm{Ax-b}_{\infty}$, the LP formulation is 
+	\begin{equation*}
+		\begin{split}
+			& \text{minimize } t \\
+			& \text{subject to } 
+			\begin{bmatrix}
+				A & \textbf{-1} \\
+				-A & \textbf{-1} \\
+			\end{bmatrix}
+			\begin{bmatrix}
+				x \\ t
+			\end{bmatrix}
+			\le
+			\begin{bmatrix}
+				b \\ -b
+			\end{bmatrix}
+		\end{split}
+	\end{equation*}
+	The (1) dual problem is 
+	\begin{equation*}
+		\begin{split}
+			& \text{minimize } -b^Tu + b^Tv \\
+			& \begin{split}
+				\text{subject to } & A^Tu -A^Tu = 0\\
+				& 1^Tu + 1^Tv = 1\\
+				& u \ge 0, v \ge 0
+			\end{split}	
+		\end{split}
+	\end{equation*}
+	and there is a (2) simpler equivalent dual:
+	\begin{equation*}
+		\begin{split}
+			& \text{minimize } t \\
+			& \text{subject to } A^Tz = 0, \norm{z}_{1} \le 1
+		\end{split}
+	\end{equation*}
+	To show the equivalence of the dual problem (assume $A$ is $m \times n$):
+	If $u, z$ are feasible in the first 
+\end{example}
+
+
+
+\subsection{Complementary slackness}
+
+
+\end{document}

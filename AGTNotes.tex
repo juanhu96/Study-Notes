@@ -1,0 +1,406 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{mathtools}
+\usepackage{color}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\renewcommand{\baselinestretch}{1.1}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+% Colors
+\definecolor{blu}{rgb}{0,0,1}
+\def\blu#1{{\color{blu}#1}}
+\definecolor{gre}{rgb}{0,.5,0}
+\def\gre#1{{\color{gre}#1}}
+\definecolor{red}{rgb}{1,0,0}
+\def\red#1{{\color{red}#1}}
+
+% Math
+\def\C{\mathbb{C}}
+\def\E{\mathbb{E}}
+\def\R{\mathbb{R}}
+\def\N{\mathbb{N}}
+\def\Z{\mathbb{Z}}
+
+\def\A{\mathcal{A}}
+\def\B{\mathcal{B}}
+\def\D{\mathcal{D}}
+\def\F{\mathcal{F}}
+\def\G{\mathcal{G}}
+\def\H{\mathcal{H}}
+\def\L{\mathcal{L}}
+\def\P{\mathcal{P}}
+\def\S{\mathcal{S}}
+\def\T{\mathcal{T}}
+\def\a{\alpha}
+\def\b{\beta}
+\def\t{\tau}
+\def\epsi{\epsilon}
+\def\em{\emptyset}
+\def\imp{\Rightarrow}
+\def\limp{\Leftarrow}
+\def\goes{\rightarrow}
+
+\def\argmax{\mathop{\rm arg\,max}}
+\def\argmin{\mathop{\rm arg\,min}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\alignStar}[1]{\begin{align*}#1\end{align*}}
+
+%%
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[thm]
+\newtheorem{lemma}[thm]{Lemma}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{pty}{Property}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{notation}{Notation}[section]
+\newtheorem{obs}{Observation}[section]
+\newcommand{\The}[2]{\begin{#1}#2\end{#1}}
+\newcommand{\ord}[0]{\text{ord}}
+
+%%
+% notes
+\iftrue 
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\re}[1]{\frac{1}{#1}}
+\newcommand{\half}[0]{\frac{1}{2}}
+\newcommand{\ift}[0]{It follows that}
+\newcommand{\cp}[1]{\overline{#1}}
+\newcommand{\Note}[0]{\noindent\textbf{Note: }} 
+\newcommand{\Claim}[0]{\noindent\textbf{Claim: }} 
+\newcommand{\Lemma}[1]{\noindent\textbf{Lemma #1}: } %
+\newcommand{\Ex}[0]{\noindent\textbf{Example: }} %
+\newcommand{\Special}[0]{\noindent\textbf{Special case: }} %
+\newcommand{\solution}[2]{\item[]\proof[Solution to #1] #2 \qedhere}
+\newcommand{\legendre}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\dent}[0]{\hspace{0.5in}}
+\fi
+
+\newcommand{\sm}[0]{\setminus}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\expect}[1]{\operatorname{E}\left[\,#1\,\right]}
+\newcommand{\nl}[0]{\vspace{12pt}}
+\newcommand{\rng}[2]{#1,\dots,#2}
+\newcommand{\srng}[3]{#1_#2,\dots,#1_#3}
+\newcommand{\st}[0]{\text{ such that }}
+\newcommand{\et}[0]{\text{ and }}
+\newcommand{\then}[0]{\text{ then }}
+\newcommand{\forsome}[0]{\text{ for some }}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+
+% misc
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert} %
+% lcm ???
+\DeclareMathOperator{\lcm}{lcm} 
+% blackboard bold
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\FF}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\CC}{\mathbb{C}}
+% mathcal
+\newcommand{\m}[1]{\mathcal{#1}}
+% vectors
+\newcommand{\vvec}[1]{\textbf{#1}} %
+\newcommand{\ii}[0]{\vvec{i}} %
+\newcommand{\jj}[0]{\vvec{j}} %
+\newcommand{\kk}[0]{\vvec{k}} %
+\newcommand{\hvec}[1]{\hat{\textbf{#1}}} %
+\newcommand{\cvec}[3]{ %column vector
+    \ensuremath{\left(\begin{array}{c}#1\\#2\\#3\end{array}\right)}}
+\newcommand{\pfrac}[2]{\frac{\partial#1}{\partial#2}} %
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} %
+% dotp roduct
+\makeatletter
+\newcommand*\dotp{\mathpalette\dotp@{.5}}
+\newcommand*\dotp@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\makeatother
+% divrg and curl
+\newcommand{\divrg}[0]{\nabla\dotp} %
+\newcommand{\curl}[0]{\nabla\times} %
+
+\begin{document}
+
+\title{\vspace{-1.6cm} \huge\textbf{{Algorithmic Game Theory Notes}}}
+\author{\large\textit{{Jingyuan Hu}}}
+\date{}
+\maketitle
+\text{}\\
+\textbf{Disclaimer}: This note is entirely for personal purpose.
+Please feel free to email me at \textit{juanhu96@gmail.com} if you find any mistakes or you have any suggestions.
+The majority of the contents/materials are based on Lecture Notes from Stanford CS$364A$ (Algorithmic Game Theory),
+UBC CPSC$536F$ (Algorithmic Game Theory), which is meant to be accessible to a Masters or 1st-year
+PhD student with an affinity for algorithms and NP-completeness. Notice that this is no substitute for a traditional game theory or
+microeconomics economics course where \textit{A Course in Game Theory} (Osborne, Rubinstein) and \textit{Microeconomic Theory} (MWG)
+are usually used as textbooks.\\
+\textbf{Reference textbooks}:\\
+\textit{Twenty Lectures on Algorithmic Game Theory} (Tim Roughgarden)\\
+\textit{Algorithmic Game Theory} (Tim Roughgarden, Eva Tardos)\\
+
+\tableofcontents
+
+\section{Introduction}
+
+\begin{itemize}
+	\item \textit{Braess's Paradox}: Adding a superfast link to a network can negatively impact all of the traffic.
+	\item \textit{Price of anarchy (POA)} is the ratio between the system performance with strategic players and
+	      the best possible system performance. When the POA is close to 1, selfish behaviour is largely benign.
+	\item A \textit{game} is specified by a set of players, a strategy set for each player, and a payoff to each player in each outcome.
+\end{itemize}
+
+
+\begin{thm} (\textbf{Nash's Theorem})
+	Every finite two-player game has a Nash Equilibrium
+\end{thm}
+
+\section{Mechanism Design Basics}
+
+\subsection{Single-item Auctions}
+Each bidder $i$ has a nonnegative \textit{valuation} $v_{i}$ (maximum willingness-to-pay) for the item being sold.
+We assume this valuation is \textit{private}, meaning it is unknown to the seller and to the other bidders.
+Our bidder utility model (\textit{Quasi-linear utility model}): if bidder $i$ loses an auction, her utitlity is $0$;
+if bidder wins at a price $p$, her utility is $v_{i} - p$.
+
+\subsection{Sealed-bid Auctions}
+\textit{Sealed-bid auctions}:
+\begin{enumerate}
+	\item Each bidder $i$ privately communicates a bid $b_{i}$ to the seller — in a sealed envelope, if you like.
+	\item The seller decides who gets the item (if anyone).
+	\item The seller decides on a selling price.
+\end{enumerate}
+
+
+\subsection{First-price Auctions}
+\textit{First-price auctions}: the winning bidder pays her bid.
+
+\subsection{Second-price Auctions and Dominant Strategies}
+
+\begin{itemize}
+	\item \textit{Second-price (Vickrey) auctions}: A sealed-bid auction in which the highest bidder wins and pays a price equal
+	      to the second-highest bid.
+	\item \textit{Dominant strategy} is guaranteed to maximize a bidder's utility, no matter what the other bidders do.
+\end{itemize}
+
+\begin{prop}
+	\textbf{(Incentives in Second-Price Auctions)} In a second-price auction, every bidder $i$ has a dominant strategy:
+	set the bid $b_{i}$ equal to her private valuation.
+\end{prop}
+\proof Fix an arbitrary bidder $i$ with valuation $v_{i}$, and the bids $\textbf{b}_{-i}$ of other bidders.
+We need to show that the bidder $i$'s utility is maximized by setting $b_{i} = v_{i}$.
+Let $B = \max_{j\neq i}b_{j}$ denote the highest bid by other bidders. If $b_{i} < B$, then $i$ loses and receives utility $0$.
+If $b_{i} \ge B$, then $i$ wins at price $B$ and receives utility $v_{i} - B$. Therefore, if $v_{i} < B$, the maximum utility
+that bidder $i$ can obtain is $\max\{0, v_{i} - B\} = 0$ and is acheived by bidding truthfully (and losing); if $v_{i} \ge B$,
+the maximum utility that bidder $i$ can obtain is $\max\{0, v_{i} - B\} = v_{i} - B$ and is also acheived by bidding truthfully
+(and winning). \qedhere
+
+\begin{prop}
+	In a second-price auction, every truthful bidder is guaranteed nonnegative utility.
+\end{prop}
+\proof Losers receives utility $0$. For winner, say bidder $i$, his utility will be $v_{i} - p$ where $p$ is the second-highest bid.
+Since $i$ is the winner (and bid his true valuation), we have $p \le v_{i} \imp v_{i} - p \ge 0$. \qedhere
+\text{}\\
+
+\Note (\textit{Exercise}) Truthful bidding is the unique dominant strategy for a bidder in a second-price auction
+
+\subsection{Ideal Auctions}
+
+We first start with a couple of definitions:
+\begin{defn} \textbf{(Dominant-Strategy Incentive Compatible)}
+	An auction is \textit{dominant-strategy incentive compatible (DSIC)} if truthful bidding is always a domniant strategy for every bidder and
+	if truthful bidders always obtain nonnegative utility.
+\end{defn}
+
+\Note The condition that truthful bidders obtain nonnegative utility is traditionally considered a separate requirement,
+called \textit{individual rationality} or \textit{voluntary participation}. (Bidder with an obvious dominant strategy will play it)
+
+\begin{defn} \textbf{(Social welfare)}
+	The social welfare of an outcome of a single-item auction is $\sum_{i=1}^{n}v_{i}x_{i}$, where $x_{i} = 1_{\{i \text{ wins}\}}$.
+	(Since there's only one item, we have feasibility constraint: $\sum_{i=1}^{n}x_{i} \le 1$, in this case the social welfare is just
+	the valuation of the winner, or $0$ if there is no winner.)
+\end{defn}
+
+\Note Sale price does not appear in the definition of social welfare, since we can think of the seller as an agent whose utility is the revenue she earns,
+then it will cancels out the utility lost by the auction winner from paying for the item.
+(Suppose the price is $10$, sell at $8$: seller agent earn $-2$, buyer earn $2$, welfare is the winner (buyer);
+If sell at $12$, seller agent earn $2$, buyer earn $-2$, welfare is the winner (seller)) \\
+
+Second-price single item auctions are 'ideal' in that they enjoy three quite different and desirable properties:
+\begin{thm} \textbf{(Second-Price Auction Are Ideal)}
+	A second-price single item auction satisfies the following:
+	\begin{itemize}
+		\item (Strong incentive guarantees) It is a DSIC auction
+		\item (Strong performance guarantees) It is welfare maximizing
+		\item (Computational efficiency) It can be implemented in time polynomial (indeed, linear) in the size of the input,
+		      meaning the number of bits necessary to represent the numbers $v_{1}, \dots, v_{n}$.
+	\end{itemize}
+\end{thm}
+
+\Note DSIC property makes bidder and seller decision easier; Welfare maximization property let the actuion identifies the bidder with the highest valuation
+even though the valuations are a priori unknown to the seller; Computational efficiency assures pracical utility (e.g. auctions for online advertising)
+
+
+\subsection{Case Study: Sponsored Search Auctions}
+
+\begin{itemize}
+	\item The items for sale are $k$ "slots" for sponsored links on a search results page
+	\item Quantify different slots using \textit{click through rates (CTRs)}: the CTR $\alpha_{j}$ of a slot $j$ represents the
+	      probability that the end users clicks on the slot. (Reasonable assumption: $\alpha_{1} \ge \dots \ge \alpha_{k}$;
+	      Another strong assumption: CTR of a slot is independent of its occupant, in genearl they are related based on some 'quality score'
+	      of the advertiser)
+	\item Advertiser has a private valuation $v_{i}$ for each click on her link,
+	      hence the expected value by advertiser $i$ from slot $j$ is $v_{i}\alpha_{j}$
+	\item We want (1)DSIC, (2)Social welfare maximization, (3)Computational efficiency.
+	\item Need to design: choice of who wins \& choice of who pays what
+	\item \begin{itemize}
+		      \item Step 1: Assume, without justication, bidders bid truthfully. How should we \textit{assign bidders to slots} so that
+		            the above properties (2) \& (3) hold
+		      \item Step 2: Given our answer in step 1, how should we set s\textit{elling price} s.t. the property (1) holds
+	      \end{itemize}
+\end{itemize}
+
+\section{Myerson's Lemma}
+
+\subsection{Single-Parameter Environments}
+\begin{itemize}
+	\item $n$ agents, each agent $i$ has a private nonnegative valuation $v_{i}$ (her value 'per unit of stuff' that she acquires)
+	\item There is a feasible set $X$, each element of $X$ is a nonnegative $n-$vector $(x_{1}, ..., x_{n})$ where $x_{i}$ denotes the
+	      'amount of stuff' given to agent $i$
+\end{itemize}
+
+Now we present some examples
+
+\begin{example} \textbf{(Single-Item Auction)}
+	In a single-item auction, $X$ is the set of $0-1$ vectors that have at most one $1$, that is, $\sum_{i=1}^{n}x_{i} \le 1$
+\end{example}
+
+\begin{example} \textbf{(k-Unit Auction)}
+	With $k$ identical items and the constraint that each bidder gets at most one,
+	the feature set is the set of $0-1$ vectors that satisfies $\sum_{i=1}^{n}x_{i} \le k$.
+\end{example}
+
+\begin{example} \textbf{(Sponsored Search Auction)}
+	$X$ is the set of $n-$vectors corresponding to assignments of bidders to slots, where each slot is assigned to at most one bidder
+	and each bidder is assigned to at most one slot. If bidder $i$ is assigned to slot $j$, then the component $x_{i}$ equals the click-through
+	rate $\alpha_{j}$ of her slot.
+\end{example}
+
+\begin{example} \textbf{(Public Project)}
+	Deciding whether or not to build a public project that can be used by all,
+	can be modeled by set $X = \{(0, \dots, 0), (1, \dots, 1) \}$
+\end{example}
+
+\subsection{Allocation and Payment Rules}
+In sealed-bid auction we need to design: choice of who wins (\textbf{allocation rule}) \& choice of who pays what (\textbf{payment rule}),
+this leads to the three steps:
+\begin{enumerate}
+	\item Collect bids $\textbf{b} = (b_{1}, \dots, b_{n})$ from all agents,
+	      the vector is called the \textit{bid vector} or \textit{bid profile}.
+	\item (\textbf{Allocation Rule}) Choose a feasible allocation $x(\textbf{b}) \in X \subseteq \R^n$ as a function of their bids.
+	\item (\textbf{Payment Rule}) Choose payments $p(\textbf{b}) \in \R^n$ as a function of the bids.
+\end{enumerate}
+
+\Note Procedure of this type are called \textit{direct-revelation mechanisms},
+since in the first step agents are asked to reveal directly their private valuations.\\
+
+Then, with this quasilinear utility model, in a mechanism with allocation and payment rules $\textbf{b}, \textbf{p}$ respectively,
+agent $i$ receives utitlity $u_{i}(\textbf{b}) = v_{i}x_{i}(\textbf{b}) - p_{i}(\textbf{b})$ given the bid profile is $\textbf{b}$.
+
+We now only focus on payment rules that satisfy $p_{i}(\textbf{b}) \in [0, b_{i}x_{i}(\textbf{b})]$ for every agent $i$ and bid profile $\textbf{b}$:
+\begin{itemize}
+	\item $p_{i}(\textbf{b}) \ge 0$: prohibiting the seller from paying the agents. ($p_{i}$ is the amount that the agent $i$ need to pay)
+	\item $p_{i}(\textbf{b}) \le b_{i}x_{i}(\textbf{b})$: ensures a truthful agent receives nonnegative utility.
+	      (the amount that the agent need to pay under the mechanism is at most \textit{how much he bid per unit} $\times$ \textit{how much unit he got allocated},
+	      if he pays more than he bid (valuation, since he is truthful), he will have negative utility)
+\end{itemize}
+
+\subsection{Statement of Myerson's Lemma}
+\begin{defn} \textbf{(Implementable Allocation Rule)}
+	An allocation rule $\textbf{x}$ for a single-parameter environment is \textit{implementable} if there is a payment rule $\textbf{p}$ s.t.
+	the direct-revelation mechanism $(\textbf{x}, \textbf{p})$ is DSIC.
+\end{defn}
+
+\Note In other words, the projection of DSIC mechanisms onto their allocation rules is the set of implementable rules.
+
+\begin{defn} \textbf{(Monotone Allocation Rule)}
+	An allocation rule $\textbf{x}$ for a single-parameter environment is \textit{monotone} if for every agent $i$ and bids $\textbf{b}_{-i}$
+	by the other agents, the allocation rule $x_{i}(z, \textbf{b}_{-i})$ to $i$ is nondecreasing in her bid $z$.
+\end{defn}
+
+\Note The single-item auction allocation rule that awards the item to the highest bidder is monotone:
+if you're the winner and keep raising your bid (other bids fixed), you continue to win; Awarding to the second-highest is not monotone:
+if you're the winner (second highest) and keep raising, eventually you will become the highest and lose.
+(\textbf{Notice}: $x_{i}(z, \textbf{b}_{-i})$ is the "amount of stuff" not the actual value,
+otherwise awarding to the highest will clearly not monotone.)
+
+\begin{thm} \textbf{(Myerson's Lemma)} Fix a single-parameter environment, then
+	\begin{itemize}
+		\item[(a)] An allocation rule $\textbf{x}$ is implementable iff it is monotone.
+		\item[(b)] If $\textbf{x}$ is monotone, then there exist an unique payment rule for which the direct-revelation mechanism $(\textbf{x}, \textbf{p})$
+		      is DSIC and $p_{i}(\textbf{b}) = 0$ whenever $b_{i} = 0$
+		\item[(c)] The payment rule in $(b)$ is given by an explicit formula
+	\end{itemize}
+\end{thm}
+\proof Fix a single-parameter environment and consider an allocation rule $\textbf{x}$, fix $i$ and $\textbf{b}_{-i}$ arbitrarily.
+Write $x(z)$ and $p(z)$ for the allocation $x_{i}(z, \textbf{b}_{-i})$ and payment $p_{i}(z, \textbf{b}_{-i})$ of agent $i$ when she bids $z$.
+We invoke the DSIC constraint via a simple trick: suppose $(\textbf{x}, \textbf{p})$ is DSIC, and consider any arbitrary $0 \le y < z$.
+Because agent $i$ might well have private valuation $z$ and is free to submit the false bid $y$, DSIC demands that utility of bidding $z$ is greater then
+utility of bidding $y$.
+\begin{equation*}
+	\underbrace{z\cdot x(z)}_{bid(valuation) \times allocation} - \underbrace{p(z)}_{need to pay} \ge z \cdot x(y) - p(y)
+\end{equation*}
+Similarly, agent $i$ might well ave private valuation $y$ and could submit the false bid $z$, $(\textbf{x}, \textbf{p})$ must satisfy
+\begin{equation*}
+	y \cdot x(y) - p(y) \ge y \cdot x(z) - p(z)
+\end{equation*}
+hence we have $z[x(y) - x(z)] \le p(y) - p(z) \le y[x(y) - x(z)]$, which implies every implementable allocation rule is monotone.
+Thus we can assume for the rest of the proof that $\textbf{x}$ is monotone.
+
+Next, consider the case where $x$ is a piecewise constant function, where the graph of $x$ is flat except for a finite number of "jumps".
+Now taking $\lim_{y \downarrow z}$ (\red{Isn't $y < z$??}) on $z[x(y) - x(z)] \le p(y) - p(z) \le y[x(y) - x(z)]$, we notice that LHS and RHS will be 0 if there's no jumps in $x$ at $z$.
+If there is a jump of $h$ at $z$, then LHS and RHS both tend to $z \cdot h$, which means the following constraint on $p$: for every $z$ we have
+\begin{equation*}
+	\text{jump in } p \text{ at } z = z \cdot [\text{jump in } x \text{ at } z]
+\end{equation*}
+Combine this with the initial condition $p(0) = 0$, we have the payment formula: for every agent $i$, bids $\textbf{b}_{-i}$ by other agents, and bid $b_{i}$ by $i$:
+\begin{equation*}
+	p_{i}(b_{i}, \textbf{b}_{-i}) = \sum_{j=1}^{\ell}z_{j}[\text{jump in } x_{i}(\cdot, \textbf{b}_{-i}) \text{ at } z_{j}]
+\end{equation*}
+where $z_1, \dots, z_{\ell}$ are the breakpoints of the allocation function $x_{i}(\cdot, \textbf{b}_{-i})$ in the range $[0, b_i]$.
+
+Similar argument applies even when $x$ is monotone but not piecewise constant, for example, $x$ is differentiable. dividing the sandwich inequality by $y-z$,
+take limit as $y \downarrow z$ yields the constraint $p'(z) = z \cdot x'(z)$, recall $p(0) = 0$, then
+\begin{equation*}
+	p_{i}(b_{i}, \textbf{b}_{-i}) = \int_{0}^{b_{i}}z \cdot \frac{d}{dz}x_{i}(z, \textbf{b}_{-i})dz
+\end{equation*}
+Thus, for every allocation rule $\textbf{x}$, there is at most one payment rule $\textbf{p}$ s.t. $(\textbf{x}, \textbf{p})$ is DSIC.
+But we still to check that this payment rule always works provided $\textbf{x}$ is monotone.
+(We already know that even this payment rule cannot extend a non-monotone allocation rule to a DSIC mechanism)
+We proof this by picturing ...
+\qedhere
+
+\text{}\\
+Myerson's Lemma is the foundation of most mechanism design theory:
+\begin{itemize}
+	\item (a) states that Implementable Allocation Rule and Monotone Allocation Rule defines exactly the same class of allocation rules.
+	\item (b) states that when an allocation rule is implementable, there is no ambiguity in how to assign payments to achieve the DSIC property.
+	      (there's only one way to do it)
+	\item (c) states that their is a relatively simple and explicit formula for the payment rule in $(b)$.
+\end{itemize}
+
+\subsection{Applying the Payment Formula}
+
+\section{Algorithmic Mechanism Design}
+
+\section{Revenue-Maximizing Auctions}
+
+\section{Simple Near-Optimal Auctions}
+
+\section{Multi-parameter Mechanism Design}
+
+\end{document}
